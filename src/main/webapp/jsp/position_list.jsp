@@ -12,14 +12,9 @@
     <c:if test="${not empty errorMessage}">
         <p class="error-message"><c:out value="${errorMessage}"/></p>
     </c:if>
-    <c:if test="${param.success == 'delete'}">
-        <p class="success-message">职位删除成功！</p>
-    </c:if>
-    <c:if test="${param.success == 'update'}">
-        <p class="success-message">职位信息更新成功！</p>
-    </c:if>
-    <c:if test="${param.success == 'add'}">
-        <p class="success-message">职位添加成功！</p>
+    <%-- Updated to use flash attributes for success messages --%>
+    <c:if test="${not empty successMessage}">
+        <p class="success-message"><c:out value="${successMessage}"/></p>
     </c:if>
 
     <%-- The PositionServlet's listPositions method doesn't currently support search, but adding a placeholder if needed in future --%>
@@ -62,7 +57,7 @@
         </c:choose>
     </table>
 
-    <p><a href="${pageContext.request.contextPath}/jsp/index.jsp">返回主页</a></p>
+    <p><a href="${pageContext.request.contextPath}/">返回主页</a></p> <%-- Changed to context root --%>
     <p><a href="${pageContext.request.contextPath}/logout">退出登录</a></p>
 </div>
 </body>

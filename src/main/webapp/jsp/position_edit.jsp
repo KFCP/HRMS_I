@@ -12,12 +12,10 @@
     <c:if test="${not empty errorMessage}">
         <p class="error-message"><c:out value="${errorMessage}"/></p>
     </c:if>
-    <c:if test="${param.success == 'update'}">
-        <p class="success-message">职位信息更新成功！</p>
-    </c:if>
+    <%-- Success messages are now displayed on the list page via flash attributes --%>
 
     <c:if test="${not empty position}">
-        <form method="post" action="${pageContext.request.contextPath}/position/edit">
+        <form method="post" action="${pageContext.request.contextPath}/position/update"> <%-- Changed action to /position/update --%>
             <input type="hidden" name="id" value="<c:out value="${position.id}"/>">
 
             <label for="positionName">职位名称:</label>
@@ -34,7 +32,7 @@
     </c:if>
 
     <p><a href="${pageContext.request.contextPath}/position/list">返回职位列表</a></p>
-    <p><a href="${pageContext.request.contextPath}/jsp/index.jsp">返回主页</a></p>
+    <p><a href="${pageContext.request.contextPath}/">返回主页</a></p> <%-- Changed to context root --%>
     <p><a href="${pageContext.request.contextPath}/logout">退出登录</a></p>
 </div>
 </body>

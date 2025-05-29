@@ -16,7 +16,7 @@
 
     <form method="post" action="${pageContext.request.contextPath}/user/add">
         <label for="username">用户名:</label>
-        <input type="text" id="username" name="username" value="<c:out value='${param.username}'/>" required><br>
+        <input type="text" id="username" name="username" value="<c:out value='${user.username}'/>" required><br>
 
         <label for="password">密码:</label>
         <input type="password" id="password" name="password" required><br>
@@ -28,7 +28,7 @@
     </form>
 
     <p><a href="${pageContext.request.contextPath}/user/list">查看用户列表</a></p>
-    <p><a href="${pageContext.request.contextPath}/jsp/index.jsp">返回主页</a></p>
+    <p><a href="${pageContext.request.contextPath}/">返回主页</a></p> <%-- Changed to context root --%>
     <p><a href="${pageContext.request.contextPath}/logout">退出登录</a></p>
 </div>
 </body>

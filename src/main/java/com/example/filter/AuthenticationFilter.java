@@ -12,32 +12,39 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-// Using @WebFilter annotation is an alternative to XML configuration,
-// but the task asks to update web.xml, so this might be commented out or removed
-// if web.xml is the sole source of truth for filter mapping.
-// For this task, I will rely on web.xml for mapping.
-// @WebFilter("/*") 
+// Filter configuration is in web.xml, so @WebFilter annotation is not strictly needed here
+// and can be removed if web.xml is the sole source of truth.
 public class AuthenticationFilter implements Filter {
 
-    private List<String> publicPaths;
-    private List<String> publicPrefixes;
+    private Set<String> excludedPaths;
+    private Set<String> excludedPrefixes;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        // Define paths that don't require authentication
-        publicPaths = Arrays.asList(
-            "/jsp/user_login.jsp",
-            "/login",  // Servlet path for LoginServlet
-            "/logout"  // Servlet path for LogoutServlet
-        );
+        // Define paths that don't require authentication (exact matches)
+        // These are relative to the context path.
+        excludedPaths = new HashSet<>(Arrays.asList(
+            "/",        // Root path, handled by LoginController
+            "/login"    // Login action, handled by LoginController
+            // Logout is not strictly needed here as it requires a session to invalidate,
+            // but if accessed directly without session, it will redirect to login anyway.
+            // If logout page itself had public resources, that'd be different.
+        ));
+
         // Define path prefixes that don't require authentication
-        publicPrefixes = Arrays.asList(
-            "/css",
-            "/js" // If you have JavaScript files in a /js directory
-        );
+        excludedPrefixes = new HashSet<>(Arrays.asList(
+            "/css/",
+            "/js/",
+            "/img/"
+            // "/jsp/user_login.jsp" // Direct JSP access should ideally be prevented by placing JSPs in WEB-INF
+                                 // However, if it's accessed, it should be public.
+                                 // But since /login controller path serves it, direct JSP access is not the primary flow.
+        ));
     }
 
     @Override
@@ -46,36 +53,33 @@ public class AuthenticationFilter implements Filter {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        HttpSession session = httpRequest.getSession(false); // Do not create session if it doesn't exist
-
+        
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
+        if (path.isEmpty()) { // Handle context root explicitly if it's not already "/"
+            path = "/";
+        }
 
-        // Check if the path is public
-        boolean isPublicPath = publicPaths.contains(path);
-        if (!isPublicPath) {
-            for (String prefix : publicPrefixes) {
+        boolean isExcluded = excludedPaths.contains(path);
+        if (!isExcluded) {
+            for (String prefix : excludedPrefixes) {
                 if (path.startsWith(prefix)) {
-                    isPublicPath = true;
+                    isExcluded = true;
                     break;
                 }
             }
         }
         
-        // Allow access to public paths
-        if (isPublicPath) {
-            chain.doFilter(request, response);
-            return;
-        }
-
-        // Check for user in session if path is not public
-        boolean loggedIn = (session != null && session.getAttribute("user") != null);
-
-        if (loggedIn) {
-            // User is logged in, allow access
-            chain.doFilter(request, response);
+        if (isExcluded) {
+            chain.doFilter(request, response); // Bypass authentication
         } else {
-            // User is not logged in, redirect to login page
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/jsp/user_login.jsp?auth=required");
+            HttpSession session = httpRequest.getSession(false); // Do not create session if it doesn't exist
+            // Check for "loggedInUser" attribute set by LoginController
+            if (session != null && session.getAttribute("loggedInUser") != null) {
+                chain.doFilter(request, response); // User is logged in, allow access
+            } else {
+                // User is not logged in, redirect to the /login controller path
+                httpResponse.sendRedirect(httpRequest.getContextPath() + "/login?auth=required");
+            }
         }
     }
 

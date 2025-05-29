@@ -9,8 +9,8 @@
 <div class="container">
     <h2>管理员登录</h2>
 
-    <c:if test="${not empty errorMessage}">
-        <p class="error-message"><c:out value="${errorMessage}"/></p>
+    <c:if test="${not empty error}"> <%-- Changed from errorMessage to error --%>
+        <p class="error-message"><c:out value="${error}"/></p>
     </c:if>
     <c:if test="${param.logout == 'true'}">
         <p class="success-message">您已成功退出登录。</p>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.PositionDAO">
+
+    <resultMap id="PositionResultMap" type="PositionBean">
+        <id property="id" column="id"/>
+        <result property="positionName" column="position_name"/>
+        <result property="level" column="level"/>
+    </resultMap>
+
+    <select id="getAllPositions" resultMap="PositionResultMap">
+        SELECT id, position_name, level 
+        FROM positions 
+        ORDER BY position_name
+    </select>
+
+    <select id="getPositionById" resultMap="PositionResultMap" parameterType="int">
+        SELECT id, position_name, level 
+        FROM positions 
+        WHERE id = #{id}
+    </select>
+
+    <insert id="addPosition" parameterType="PositionBean" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO positions (position_name, level) 
+        VALUES (#{positionName}, #{level})
+    </insert>
+
+    <update id="updatePosition" parameterType="PositionBean">
+        UPDATE positions
+        SET position_name = #{positionName},
+            level = #{level}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deletePosition" parameterType="int">
+        DELETE FROM positions 
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

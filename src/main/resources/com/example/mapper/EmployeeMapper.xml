@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.EmployeeDAO">
+
+    <resultMap id="EmployeeResultMap" type="EmployeeBean">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="gender" column="gender"/>
+        <result property="age" column="age"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="positionId" column="position_id"/>
+        <result property="positionName" column="position_name"/>
+    </resultMap>
+
+    <select id="getAllEmployees" resultMap="EmployeeResultMap">
+        SELECT e.id, e.name, e.gender, e.age, e.phone, e.email, e.position_id, p.position_name
+        FROM employees e
+        LEFT JOIN positions p ON e.position_id = p.id
+        ORDER BY e.name
+    </select>
+
+    <select id="getEmployeeById" resultMap="EmployeeResultMap" parameterType="int">
+        SELECT e.id, e.name, e.gender, e.age, e.phone, e.email, e.position_id, p.position_name
+        FROM employees e
+        LEFT JOIN positions p ON e.position_id = p.id
+        WHERE e.id = #{id}
+    </select>
+
+    <select id="searchEmployeesByName" resultMap="EmployeeResultMap" parameterType="string">
+        SELECT e.id, e.name, e.gender, e.age, e.phone, e.email, e.position_id, p.position_name
+        FROM employees e
+        LEFT JOIN positions p ON e.position_id = p.id
+        WHERE e.name LIKE #{namePattern}
+        ORDER BY e.name
+    </select>
+
+    <insert id="addEmployee" parameterType="EmployeeBean" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO employees (name, gender, age, phone, email, position_id)
+        VALUES (#{name}, #{gender}, #{age}, #{phone}, #{email}, #{positionId})
+    </insert>
+
+    <update id="updateEmployee" parameterType="EmployeeBean">
+        UPDATE employees
+        SET name = #{name},
+            gender = #{gender},
+            age = #{age},
+            phone = #{phone},
+            email = #{email},
+            position_id = #{positionId}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteEmployee" parameterType="int">
+        DELETE FROM employees WHERE id = #{id}
+    </delete>
+
+</mapper>
