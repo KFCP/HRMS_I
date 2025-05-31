@@ -11,19 +11,19 @@
     </resultMap>
 
     <select id="getAllPositions" resultMap="PositionResultMap">
-        SELECT id, position_name, level 
-        FROM positions 
+        SELECT id, position_name, level
+        FROM positions
         ORDER BY position_name
     </select>
 
     <select id="getPositionById" resultMap="PositionResultMap" parameterType="int">
-        SELECT id, position_name, level 
-        FROM positions 
+        SELECT id, position_name, level
+        FROM positions
         WHERE id = #{id}
     </select>
 
     <insert id="addPosition" parameterType="PositionBean" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO positions (position_name, level) 
+        INSERT INTO positions (position_name, level)
         VALUES (#{positionName}, #{level})
     </insert>
 
@@ -35,7 +35,7 @@
     </update>
 
     <delete id="deletePosition" parameterType="int">
-        DELETE FROM positions 
+        DELETE FROM positions
         WHERE id = #{id}
     </delete>
 

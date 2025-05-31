@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 // import org.springframework.web.bind.annotation.RequestMapping; // Not used
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession; // Already Jakarta
 
 @Controller
 public class LoginController {

@@ -53,7 +53,7 @@ public class AuthenticationFilter implements Filter {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        
+
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
         if (path.isEmpty()) { // Handle context root explicitly if it's not already "/"
             path = "/";

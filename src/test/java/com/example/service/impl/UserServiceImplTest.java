@@ -65,7 +65,7 @@ public class UserServiceImplTest {
         UserBean newUser = new UserBean();
         newUser.setUsername("newuser");
         newUser.setPassword("newpassword");
-        
+
         userService.registerUser(newUser);
 
         verify(userDAO).getUserByUsername("newuser");
@@ -82,7 +82,7 @@ public class UserServiceImplTest {
         Exception exception = assertThrows(Exception.class, () -> {
             userService.registerUser(existingUser);
         });
-        
+
         assertEquals("User already exists with username: testuser", exception.getMessage());
         verify(userDAO).getUserByUsername("testuser");
         verify(userDAO, never()).addUser(any(UserBean.class));

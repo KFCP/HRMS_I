@@ -21,13 +21,13 @@ public class UserController {
     public String listUsers(Model model) {
         List<UserBean> userList = userService.getAllUsers(); // Use userService
         model.addAttribute("userList", userList);
-        return "user_list"; 
+        return "user_list";
     }
 
     @GetMapping("/add")
     public String showAddUserForm(Model model) {
-        model.addAttribute("user", new UserBean()); 
-        return "user_add"; 
+        model.addAttribute("user", new UserBean());
+        return "user_add";
     }
 
     @PostMapping("/add")
@@ -38,7 +38,7 @@ public class UserController {
         if (user.getUsername() == null || user.getUsername().trim().isEmpty() ||
             user.getPassword() == null || user.getPassword().trim().isEmpty()) {
             model.addAttribute("errorMessage", "Username and password are required.");
-            model.addAttribute("user", user); 
+            model.addAttribute("user", user);
             return "user_add";
         }
 
@@ -47,7 +47,7 @@ public class UserController {
             model.addAttribute("user", user);
             return "user_add";
         }
-        
+
         try {
             userService.registerUser(user); // Use userService
             redirectAttributes.addFlashAttribute("successMessage", "User added successfully.");
@@ -66,7 +66,7 @@ public class UserController {
             // Do not add password to the model for editing display
             user.setPassword(null); // Clear password before sending to form
             model.addAttribute("user", user);
-            return "user_edit"; 
+            return "user_edit";
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "User not found with ID: " + id);
             return "redirect:/user/list";
@@ -75,10 +75,10 @@ public class UserController {
 
     @PostMapping("/update")
     public String updateUser(@ModelAttribute("user") UserBean user, // User object from form
-                             @RequestParam(value="newPassword", required=false) String newPassword, 
+                             @RequestParam(value="newPassword", required=false) String newPassword,
                              @RequestParam(value="confirmNewPassword", required=false) String confirmNewPassword,
                              RedirectAttributes redirectAttributes, Model model) {
-        
+
         UserBean userToUpdate = userService.getUserById(user.getId());
         if (userToUpdate == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "User not found with ID: " + user.getId());
@@ -107,7 +107,7 @@ public class UserController {
             }
             userToUpdate.setPassword(newPassword); // Set new password for update
         } else {
-            // If newPassword is empty, retain the old password. 
+            // If newPassword is empty, retain the old password.
             // UserDAO's updateUser should be designed to only update password if it's not null/empty in the bean.
             // Or, the service/DAO should explicitly fetch the user and only set fields that are meant to change.
             // For this setup, userService.updateUser will receive a UserBean. If its password field is null,
@@ -138,7 +138,7 @@ public class UserController {
             // So, if newPassword is empty, we should make sure userToUpdate.password is the current one (already is).
             // If newPassword is set, userToUpdate.password is set to newPassword.
         }
-        
+
         try {
             userService.updateUser(userToUpdate);
             redirectAttributes.addFlashAttribute("successMessage", "User updated successfully.");

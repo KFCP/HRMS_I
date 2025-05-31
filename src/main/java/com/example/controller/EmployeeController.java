@@ -33,15 +33,15 @@ public class EmployeeController {
             employeeList = employeeService.getAllEmployees(); // Use employeeService
         }
         model.addAttribute("employeeList", employeeList);
-        return "employee_list"; 
+        return "employee_list";
     }
 
     @GetMapping("/add")
     public String showAddEmployeeForm(Model model) {
         List<PositionBean> positionList = positionService.getAllPositions(); // Use positionService
-        model.addAttribute("employee", new EmployeeBean()); 
+        model.addAttribute("employee", new EmployeeBean());
         model.addAttribute("positionList", positionList);
-        return "employee_add"; 
+        return "employee_add";
     }
 
     @PostMapping("/add")
@@ -53,7 +53,7 @@ public class EmployeeController {
             employee.getPhone() == null || employee.getPhone().trim().isEmpty() ||
             employee.getEmail() == null || employee.getEmail().trim().isEmpty() ||
             employee.getAge() <= 0 || employee.getPositionId() == 0) {
-            
+
             // If validation fails, return to the form with an error message and existing data
             model.addAttribute("errorMessage", "All fields are required and age must be positive.");
             // Repopulate position list for the form
@@ -82,14 +82,14 @@ public class EmployeeController {
         if (employee != null) {
             model.addAttribute("employee", employee);
             model.addAttribute("positionList", positionList);
-            return "employee_edit"; 
+            return "employee_edit";
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "Employee not found with ID: " + id);
             return "redirect:/employee/list";
         }
     }
 
-    @PostMapping("/update") 
+    @PostMapping("/update")
     public String updateEmployee(@ModelAttribute("employee") EmployeeBean employee,
                                  RedirectAttributes redirectAttributes, Model model) { // Added Model for error case
         // Basic validation

@@ -21,13 +21,13 @@ public class PositionController {
     public String listPositions(Model model) {
         List<PositionBean> positionList = positionService.getAllPositions(); // Use positionService
         model.addAttribute("positionList", positionList);
-        return "position_list"; 
+        return "position_list";
     }
 
     @GetMapping("/add")
     public String showAddPositionForm(Model model) {
-        model.addAttribute("position", new PositionBean()); 
-        return "position_add"; 
+        model.addAttribute("position", new PositionBean());
+        return "position_add";
     }
 
     @PostMapping("/add")
@@ -56,14 +56,14 @@ public class PositionController {
         PositionBean position = positionService.getPositionById(id); // Use positionService
         if (position != null) {
             model.addAttribute("position", position);
-            return "position_edit"; 
+            return "position_edit";
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "Position not found with ID: " + id);
             return "redirect:/position/list";
         }
     }
 
-    @PostMapping("/update") 
+    @PostMapping("/update")
     public String updatePosition(@ModelAttribute("position") PositionBean position,
                                  RedirectAttributes redirectAttributes, Model model) { // Added model for error
         // Basic validation

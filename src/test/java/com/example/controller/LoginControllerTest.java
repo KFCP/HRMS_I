@@ -39,7 +39,7 @@ public class LoginControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(loginController)
                                .setViewResolvers(viewResolver) // Optional: for more complete view resolution testing
                                .build();
-        
+
         testUser = new UserBean();
         testUser.setId(1);
         testUser.setUsername("testuser");
@@ -79,11 +79,11 @@ public class LoginControllerTest {
                .andExpect(view().name("user_login"))
                .andExpect(model().attributeExists("error"))
                // Corrected error message to match LoginController
-               .andExpect(model().attribute("error", "Invalid username or password.")); 
+               .andExpect(model().attribute("error", "Invalid username or password."));
 
         verify(userService).login("testuser", "wrongpassword");
     }
-    
+
     @Test
     void testShowRootPage_UserLoggedIn() throws Exception {
         mockMvc.perform(get("/")

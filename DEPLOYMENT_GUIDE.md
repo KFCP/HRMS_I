@@ -6,9 +6,9 @@ This guide provides instructions for deploying the Human Resource Management Sys
 
 Ensure the following software is installed on your system:
 
--   **JDK:** Version 1.8 or higher.
--   **Apache Maven:** Version 3.6 or higher.
--   **Apache Tomcat:** Version 9.x or 10.x (ensure compatibility with Servlet API 4.0).
+-   **JDK:** Version 17 or higher.
+-   **Apache Maven:** Version 3.6 or higher (ideally 3.8+ for better Java 17 support).
+-   **Apache Tomcat:** Version 10.0.x or higher (to support Jakarta EE 9 / Servlet 5.0).
 -   **MySQL Server:** Version 8.x recommended.
 -   **IDE (Optional):**
     -   IntelliJ IDEA (Community or Ultimate)
@@ -65,7 +65,7 @@ The application requires a MySQL database named `hrms_db`.
 1.  **Clone the Repository:**
     ```bash
     git clone <repository_url>
-    cd hrms-ssm 
+    cd hrms-ssm
     ```
     (Replace `<repository_url>` with the actual URL of the Git repository)
 
@@ -92,7 +92,7 @@ The application requires a MySQL database named `hrms_db`.
     ```properties
     db.driverClassName=com.mysql.cj.jdbc.Driver
     db.url=jdbc:mysql://localhost:3306/hrms_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    db.username=your_mysql_user 
+    db.username=your_mysql_user
     db.password=your_mysql_password
     ```
     Replace `your_mysql_user` and `your_mysql_password` accordingly.

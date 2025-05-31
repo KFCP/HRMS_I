@@ -11,17 +11,18 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version> <!-- Updated Java version -->
         <spring.version>5.3.30</spring.version>
         <mybatis.version>3.5.13</mybatis.version>
         <mybatis-spring.version>2.1.1</mybatis-spring.version>
         <mysql.version>8.0.28</mysql.version>
         <c3p0.version>0.9.5.5</c3p0.version>
-        <servlet.api.version>4.0.1</servlet.api.version>
-        <jsp.api.version>2.3.3</jsp.api.version>
-        <jstl.version>1.2</jstl.version>
-        <slf4j.version>1.7.32</slf4j.version>
-        <logback.version>1.2.6</logback.version>
+        <jakarta.servlet.api.version>5.0.0</jakarta.servlet.api.version> <!-- Jakarta Servlet API -->
+        <jakarta.jsp.api.version>3.0.0</jakarta.jsp.api.version> <!-- Jakarta JSP API -->
+        <jakarta.jstl.api.version>2.0.0</jakarta.jstl.api.version> <!-- Jakarta JSTL API -->
+        <glassfish.jstl.version>2.0.0</glassfish.jstl.version> <!-- Jakarta JSTL Implementation -->
+        <slf4j.version>1.7.32</slf4j.version> <!-- SLF4J 1.7.x is fine, consider 2.x if issues arise -->
+        <logback.version>1.2.6</logback.version> <!-- Logback 1.2.x is fine, consider 1.3.x/1.4.x for full Java 17+ support if needed -->
         <!-- Test Dependency Versions -->
         <junit.jupiter.version>5.9.2</junit.jupiter.version>
         <mockito.version>5.3.1</mockito.version>
@@ -75,27 +76,34 @@
             <version>${c3p0.version}</version>
         </dependency>
 
-        <!-- Servlet API (provided) -->
+        <!-- Jakarta Servlet API (provided) -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${servlet.api.version}</version>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>${jakarta.servlet.api.version}</version>
             <scope>provided</scope>
         </dependency>
 
-        <!-- JSP API (provided) -->
+        <!-- Jakarta JSP API (provided) -->
         <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>javax.servlet.jsp-api</artifactId>
-            <version>${jsp.api.version}</version>
+            <groupId>jakarta.servlet.jsp</groupId>
+            <artifactId>jakarta.servlet.jsp-api</artifactId>
+            <version>${jakarta.jsp.api.version}</version>
             <scope>provided</scope>
         </dependency>
 
-        <!-- JSTL -->
+        <!-- Jakarta JSTL API -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>${jstl.version}</version>
+            <groupId>jakarta.servlet.jsp.jstl</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+            <version>${jakarta.jstl.api.version}</version>
+        </dependency>
+
+        <!-- Jakarta JSTL Implementation (Glassfish) -->
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+            <version>${glassfish.jstl.version}</version>
         </dependency>
 
         <!-- SLF4J API -->
@@ -164,7 +172,7 @@
             <version>${json-path.version}</version>
             <scope>test</scope>
         </dependency>
-        
+
         <!-- H2 Database (for in-memory testing) -->
         <dependency>
             <groupId>com.h2database</groupId>
@@ -188,7 +196,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.11.0</version> <!-- Updated compiler plugin version for Java 17 -->
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
